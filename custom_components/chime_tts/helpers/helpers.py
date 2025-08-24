@@ -350,13 +350,13 @@ class ChimeTTSHelper:
             tts_platform = NABU_CASA_CLOUD_TTS
 
         # Match for installed tts platform
-        if tts_platform.lower() in installed_tts_platforms:
+        if tts_platform.lower().replace("tts.","") in installed_tts_platforms:
             selected_platform = tts_platform.lower()            
-        elif tts_platform.find("google") != -1:
+        elif tts_platform.find("google_en_com") != -1:
             # Return alternate Google Translate entity, eg: "tts.google_en_com"
-            if tts_platform.startswith("tts."):
+            if tts_platform.startswith("tts.google_en_com"):
                 for installed_tts_platform in installed_tts_platforms:
-                    if (installed_tts_platform.lower().find("google") != -1
+                    if (installed_tts_platform.lower().find("google_en_com") != -1
                         and installed_tts_platform.startswith("tts.")):
                         _LOGGER.warning("The TTS entity '%s' was not found. Using '%s' instead.", tts_platform, installed_tts_platform)
                         selected_platform = installed_tts_platform
@@ -420,7 +420,7 @@ class ChimeTTSHelper:
             all_entities = hass.states.async_all()
             for entity in all_entities:
                 if str(entity.entity_id).startswith("tts."):
-                    platform_name = str(entity.entity_id).replace("tts.", "").split("_")[0]
+                    platform_name = str(entity.entity_id).replace("tts.", "")
                     if platform_name not in tts_entities:
                         tts_entities.append(platform_name)
             
